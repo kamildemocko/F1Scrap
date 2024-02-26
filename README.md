@@ -11,3 +11,9 @@ results.yaml is meant to be run periodically, but not yet set up
 poetry install
 poetry run playwright install chromium
 ```
+
+## Output data
+- circuits
+- drivers
+- teams
+- results
