@@ -69,9 +69,17 @@ if __name__ == "__main__":
 
     with sync_playwright() as pw:
         main = Main(pw)
-        main.save_circuits(circuits_save_path)
-        main.save_drivers(drivers_save_path)
-        main.save_teams(teams_save_path)
-        main.save_results(results_save_path)
+
+        if not circuits_save_path.exists():
+            main.save_circuits(circuits_save_path)
+
+        if not drivers_save_path.exists():
+            main.save_drivers(drivers_save_path)
+
+        if not teams_save_path.exists():
+            main.save_teams(teams_save_path)
+
+        if not results_save_path.exists():
+            main.save_results(results_save_path)
 
     logger.info("end")

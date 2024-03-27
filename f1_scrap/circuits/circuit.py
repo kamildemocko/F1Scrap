@@ -14,7 +14,7 @@ def _get_weekend_structure(page: Page) -> list[CircuitWeekendStructure]:
             name=div.locator(".f1-timetable--title").first.text_content().strip(),
             day=div.locator(".f1-timetable--day").first.text_content().strip(),
             month=div.locator(".f1-timetable--month").first.text_content().strip(),
-            time=div.locator(".start-time").first.text_content().strip(),
+            time=div.locator(".start-time").first.text_content().strip() if div.locator(".start-time").count() > 0 else "",
         ))
 
     return weekend_struct
@@ -30,11 +30,12 @@ def _get_circuit_info(page: Page) -> tuple[str, str]:
 def get_circuits(page: Page) -> Circuits:
     page.locator("div.primary-links").get_by_text("Schedule", exact=True).click()
 
-    circuits: list[Locator] = page.locator("div.event-below-hero > div").all()
+    # circuits: list[Locator] = page.locator("div.event-below-hero > div").all()
+    circuits: list[Locator] = page.locator("a.event-item-wrapper").all()
     result: list[Circuit] = []
 
     for circuit in circuits:
-        circuit.locator("> a").click()
+        circuit.click()
 
         res_weekend_struct: list[CircuitWeekendStructure] = _get_weekend_structure(page)
         title, date_span = _get_circuit_info(page)
