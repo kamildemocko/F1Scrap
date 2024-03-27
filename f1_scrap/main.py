@@ -13,7 +13,7 @@ from f1_scrap.results.results import get_results
 
 class Main:
     def __init__(self, playwright: Playwright):
-        self.browser: Browser = playwright.chromium.launch(headless=False)
+        self.browser: Browser = playwright.chromium.launch(headless=True)
         self.page: Page = self.browser.new_page()
 
         self.page.goto("https://www.formula1.com")
@@ -30,7 +30,7 @@ class Main:
     @staticmethod
     def save_data(path: Path, data: msgspec.Struct):
         with path.open("wb") as f:
-            f.write(msgspec.yaml.encode(data))
+            f.write(msgspec.json.encode(data))
 
     def save_circuits(self, output_path: Path):
         logger.info("getting circuits")
@@ -60,10 +60,10 @@ class Main:
 if __name__ == "__main__":
     logger.info("start")
 
-    circuits_save_path: Path = Path("output/circuits.yaml")
-    drivers_save_path: Path = Path("output/drivers.yaml")
-    teams_save_path: Path = Path("output/teams.yaml")
-    results_save_path: Path = Path("output/results.yaml")
+    circuits_save_path: Path = Path("output/circuits.json")
+    drivers_save_path: Path = Path("output/drivers.json")
+    teams_save_path: Path = Path("output/teams.json")
+    results_save_path: Path = Path("output/results.json")
 
     circuits_save_path.parent.mkdir(parents=True, exist_ok=True)
 
