@@ -13,7 +13,7 @@ from f1_scrap.results.results import get_results
 
 class Main:
     def __init__(self, playwright: Playwright):
-        self.browser: Browser = playwright.chromium.launch(headless=True)
+        self.browser: Browser = playwright.chromium.launch(headless=False)
         self.page: Page = self.browser.new_page()
 
         self.page.goto("https://www.formula1.com")

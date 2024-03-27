@@ -28,8 +28,7 @@ def get_results(page: Page) -> Results:
 
     page.wait_for_selector("div.resultsarchive-filter-wrap", timeout=30_000)
     filters = page.locator('div.resultsarchive-filter-wrap').all()
-    # filters[0].locator("li").first.click()
-    filters[0].locator("li").nth(1).click()
+    filters[0].locator("li").nth(0).click()
     filters[1].locator("li").first.click()
 
     circuits: list[Locator] = filters[2].locator("li").all()[1:]

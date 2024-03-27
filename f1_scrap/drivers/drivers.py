@@ -4,10 +4,11 @@ import arrow
 from f1_scrap.drivers.drivrer_types import Drivers, Driver
 
 
-def _get_driver_info(page: Page) -> Driver:
+def _get_driver_info(page: Page) -> Driver | None:
     stat_table_values_loc: list[Locator] = page.locator("table.stat-list td").all()
     stat_table_values = [v.text_content().strip() for v in stat_table_values_loc]
-    assert len(stat_table_values) == 10
+    if len(stat_table_values) != 10:
+        return None
 
     return Driver(
         name=page.locator(".driver-name").text_content().strip(),
@@ -37,10 +38,11 @@ def get_drivers(page: Page) -> Drivers:
         page.wait_for_load_state("load")
 
         driver = _get_driver_info(page)
-        result.append(driver)
+        if driver is not None:
+            result.append(driver)
 
         page.go_back()
 
-    assert len(result) == 20
+    assert len(result) >= 20
 
     return Drivers(data=result)
