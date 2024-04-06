@@ -32,7 +32,7 @@ def get_results(page: Page) -> Results:
     filters[1].locator("li").first.click()
 
     circuits: list[Locator] = filters[2].locator("li").all()[1:]
-    output: list[dict[str, Result]] = []
+    output: dict[str, list[Result]] = {}
     temp_h1: str = "THIS IS NOT THE TITLE"
 
     for circuit in circuits:
@@ -57,13 +57,13 @@ def get_results(page: Page) -> Results:
 
         table_trs = page.locator("div.resultsarchive-content").locator("tr").all()[1:]
         if len(table_trs) == 0:
-            output.append({circuit_name: positions})
+            output[circuit_name] = positions
             continue
 
         for tr in table_trs:
             results: Result = _get_results_info(tr)
             positions.append(results)
 
-        output.append({circuit_name: positions})
+        output[circuit_name] = positions
 
     return Results(data=output)

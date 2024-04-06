@@ -79,7 +79,6 @@ if __name__ == "__main__":
         if not teams_save_path.exists():
             main.save_teams(teams_save_path)
 
-        if not results_save_path.exists():
-            main.save_results(results_save_path)
+        main.save_results(results_save_path)
 
     logger.info("end")
