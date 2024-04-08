@@ -20,11 +20,12 @@ def _get_weekend_structure(page: Page) -> list[CircuitWeekendStructure]:
     return weekend_struct
 
 
-def _get_circuit_info(page: Page) -> tuple[str, str]:
+def _get_circuit_info(page: Page) -> tuple[str, str, str]:
     title: str = page.locator(".race-location").all_inner_texts()[0].strip()
     date_span: str = page.locator(".race-weekend-dates").text_content().strip()
+    name: str = page.locator("h2.f1--s").text_content().strip()
 
-    return title, date_span
+    return title, date_span, name
 
 
 def get_circuits(page: Page) -> Circuits:
@@ -38,8 +39,10 @@ def get_circuits(page: Page) -> Circuits:
         circuit.click()
 
         res_weekend_struct: list[CircuitWeekendStructure] = _get_weekend_structure(page)
-        title, date_span = _get_circuit_info(page)
-        result.append(Circuit(title=title, date_span=date_span, weekend_structure=res_weekend_struct))
+        title, date_span, name = _get_circuit_info(page)
+        result.append(
+            Circuit(title=title, date_span=date_span, circuit_name=name, weekend_structure=res_weekend_struct)
+        )
 
         page.go_back()
 

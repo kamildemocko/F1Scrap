@@ -11,6 +11,7 @@ class CircuitWeekendStructure(msgspec.Struct):
 class Circuit(msgspec.Struct):
     title: str
     date_span: str
+    circuit_name: str
     weekend_structure: list[CircuitWeekendStructure]
 
 
