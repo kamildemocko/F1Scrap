@@ -8,8 +8,8 @@ class Driver(msgspec.Struct):
     lastname: str
     name: str
     short: str
-    number: int
     team: str
+    number: int = 0
     country: str = ""
     podiums: str = ""
     points: str = ""
