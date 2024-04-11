@@ -3,7 +3,6 @@ from time import sleep
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright, Playwright, Page, Browser, FrameLocator
-import msgspec
 from loguru import logger
 from pydantic import BaseModel
 
