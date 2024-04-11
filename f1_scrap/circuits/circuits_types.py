@@ -1,19 +1,19 @@
-import msgspec
+from pydantic import BaseModel
 
 
-class CircuitWeekendStructure(msgspec.Struct):
+class CircuitWeekendStructure(BaseModel):
     name: str
     day: str
     month: str
     time: str
 
 
-class Circuit(msgspec.Struct):
+class Circuit(BaseModel):
     title: str
     date_span: str
     circuit_name: str
     weekend_structure: list[CircuitWeekendStructure]
 
 
-class Circuits(msgspec.Struct):
+class Circuits(BaseModel):
     data: list[Circuit]

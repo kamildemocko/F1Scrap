@@ -1,9 +1,9 @@
 import datetime
 
-import msgspec
+from pydantic import BaseModel
 
 
-class Driver(msgspec.Struct):
+class Driver(BaseModel):
     firstname: str
     lastname: str
     name: str
@@ -21,5 +21,5 @@ class Driver(msgspec.Struct):
     place_of_birth: str = ""
 
 
-class Drivers(msgspec.Struct):
+class Drivers(BaseModel):
     data: list[Driver]

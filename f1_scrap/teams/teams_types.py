@@ -1,12 +1,12 @@
-import msgspec
+from pydantic import BaseModel
 
 
-class TeamMember(msgspec.Struct):
+class TeamMember(BaseModel):
     name: str
     number: int
 
 
-class Team(msgspec.Struct):
+class Team(BaseModel):
     name: str
     full_name: str
     base: str
@@ -23,5 +23,5 @@ class Team(msgspec.Struct):
     member2: TeamMember
 
 
-class Teams(msgspec.Struct):
+class Teams(BaseModel):
     data: list[Team]

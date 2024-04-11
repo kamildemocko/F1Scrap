@@ -15,7 +15,7 @@ def _get_results_info(tr: Locator) -> Result:
 
     return Result(
         position=columns_values[1],
-        driver_number=columns_values[2],
+        driver_number=int(columns_values[2]),
         driver_name=name,
         team_name=columns_values[4],
         time=columns_values[6],
@@ -66,4 +66,4 @@ def get_results(page: Page) -> Results:
 
         output[circuit_name] = positions
 
-    return Results(data=output)
+    return Results(results=output)
