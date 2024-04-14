@@ -1,6 +1,6 @@
 from playwright.sync_api import Locator, Page
 
-from f1_scrap.circuits.circuits_types import CircuitWeekendStructure, Circuit, Circuits
+from .circuits_types import CircuitWeekendStructure, Circuit, Circuits
 
 
 def _get_weekend_structure(page: Page) -> list[CircuitWeekendStructure]:

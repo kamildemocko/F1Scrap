@@ -1,7 +1,7 @@
 from playwright.sync_api import Page, Locator, TimeoutError
 import arrow
 
-from f1_scrap.drivers.drivrer_types import Drivers, Driver
+from .drivrer_types import Drivers, Driver
 
 
 def _get_driver_info(page: Page, driver: Locator) -> Driver | None:

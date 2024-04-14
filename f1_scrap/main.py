@@ -6,10 +6,10 @@ from playwright.sync_api import sync_playwright, Playwright, Page, Browser, Fram
 from loguru import logger
 from pydantic import BaseModel
 
-from f1_scrap.circuits.circuit import get_circuits, Circuits
-from f1_scrap.drivers.drivers import get_drivers, Drivers
-from f1_scrap.teams.teams import get_teams, Teams
-from f1_scrap.results.results import get_results, Results
+from circuits.circuit import get_circuits, Circuits
+from drivers.drivers import get_drivers, Drivers
+from teams.teams import get_teams, Teams
+from results.results import get_results, Results
 
 
 class Main:

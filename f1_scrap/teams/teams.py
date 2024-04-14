@@ -1,6 +1,6 @@
 from playwright.sync_api import Page, Locator
 
-from f1_scrap.teams.teams_types import Team, Teams, TeamMember
+from .teams_types import Team, Teams, TeamMember
 
 
 def _get_team_info(page: Page) -> Team:

@@ -2,7 +2,7 @@ from time import sleep
 
 from playwright.sync_api import Page, Locator
 
-from f1_scrap.results.results_types import Result, Results
+from .results_types import Result, Results
 
 
 def _get_results_info(tr: Locator) -> Result:
