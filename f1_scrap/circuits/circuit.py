@@ -1,3 +1,6 @@
+import urllib.parse
+
+import arrow
 from playwright.sync_api import Locator, Page
 
 from .circuits_types import CircuitWeekendStructure, Circuit, Circuits
@@ -29,21 +32,19 @@ def _get_circuit_info(page: Page) -> tuple[str, str, str]:
 
 
 def get_circuits(page: Page) -> Circuits:
-    page.locator("div.primary-links").get_by_text("Schedule", exact=True).click()
+    page.goto(f"https://www.formula1.com/en/racing/{arrow.now().year}.html")
 
-    # circuits: list[Locator] = page.locator("div.event-below-hero > div").all()
-    circuits: list[Locator] = page.locator("a.event-item-wrapper").all()
+    circuit_locs: list[Locator] = page.locator("a.event-item-wrapper").all()
+    circuit_hrefs: list[str] = [circuit.get_attribute("href") for circuit in circuit_locs]
     result: list[Circuit] = []
 
-    for circuit in circuits:
-        circuit.click()
+    for circuit in circuit_hrefs:
+        page.goto(urllib.parse.urljoin(page.url, circuit))
 
         res_weekend_struct: list[CircuitWeekendStructure] = _get_weekend_structure(page)
         title, date_span, name = _get_circuit_info(page)
         result.append(
             Circuit(title=title, date_span=date_span, circuit_name=name, weekend_structure=res_weekend_struct)
         )
-
-        page.go_back()
 
     return Circuits(data=result)

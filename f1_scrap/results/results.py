@@ -1,5 +1,7 @@
 from time import sleep
+import urllib.parse
 
+import arrow
 from playwright.sync_api import Page, Locator
 
 from .results_types import Result, Results
@@ -23,34 +25,24 @@ def _get_results_info(tr: Locator) -> Result:
     )
 
 
-def get_results(page: Page) -> Results:
-    page.locator("div.primary-links").get_by_text("Results", exact=True).click()
+def get_results(base_url: str, page: Page) -> Results:
+    page.goto(f"https://www.formula1.com/en/results.html/{arrow.now().year}/races.html")
 
-    page.wait_for_selector("div.resultsarchive-filter-wrap", timeout=30_000)
-    filters = page.locator('div.resultsarchive-filter-wrap').all()
-    filters[0].locator("li").nth(0).click()
-    filters[1].locator("li").first.click()
-
-    circuits: list[Locator] = filters[2].locator("li").all()[1:]
+    circuits: list[Locator] = (page
+                               .locator("ul.resultsarchive-filter")
+                               .nth(2)
+                               .locator("li.resultsarchive-filter-item > a")
+                               .all())
     output: dict[str, list[Result]] = {}
-    temp_h1: str = "THIS IS NOT THE TITLE"
 
     for circuit in circuits:
+        if circuit.text_content().strip() == "All":
+            continue
+
+        page.goto(urllib.parse.urljoin(base_url, circuit.get_attribute("href")))
+
         circuit_name = circuit.text_content().strip()
         positions: list[Result] = []
-
-        circuit.click()
-        while True:
-            temp_h1 == "" and sleep(1)
-            sleep(0.2)
-
-            actual_h1 = page.locator("h1.ResultsArchiveTitle").text_content().strip()
-            if temp_h1 in actual_h1:
-                continue
-
-            temp_h1 = actual_h1
-            sleep(1)
-            break
 
         if page.query_selector("div.resultsarchive-content") is None:
             continue

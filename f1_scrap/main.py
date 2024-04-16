@@ -15,11 +15,8 @@ from results.results import get_results, Results
 class Main:
     def __init__(self, playwright: Playwright):
         self.browser: Browser = playwright.chromium.launch(headless=True)
-        self.context = self.browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36")
-        self.page: Page = self.context.new_page()
-
-        self.page.goto("https://www.formula1.com")
-        self._handle_gdpr()
+        self.page: Page = self.browser.new_page()
+        self.base_url = "https://www.formula1.com"
 
     def _handle_gdpr(self):
         self.page.wait_for_selector('iframe[id^="sp_message_iframe"]', timeout=5000)
@@ -50,13 +47,13 @@ class Main:
 
     def save_drivers(self, output_path: Path):
         logger.info("getting drivers")
-        drivers: Drivers = get_drivers(self.page)
+        drivers: Drivers = get_drivers(self.browser, self.base_url, self.page)
         self.save_data(output_path, drivers)
         logger.info("> done")
 
     def save_teams(self, output_path: Path):
         logger.info("getting teams")
-        teams: Teams = get_teams(self.page)
+        teams: Teams = get_teams(self.base_url, self.page)
         self.save_data(output_path, teams)
         logger.info("> done")
 
@@ -67,7 +64,7 @@ class Main:
         :return: True if saved, False if the files has no differences
         """
         logger.info("getting results")
-        results: Results = get_results(self.page)
+        results: Results = get_results(self.base_url, self.page)
         is_same = self.read_data(output_path, Results) == results
         if is_same:
             return False

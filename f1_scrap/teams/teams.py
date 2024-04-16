@@ -1,3 +1,5 @@
+import urllib.parse
+
 from playwright.sync_api import Page, Locator
 
 from .teams_types import Team, Teams, TeamMember
@@ -38,21 +40,18 @@ def _get_team_info(page: Page) -> Team:
     )
 
 
-def get_teams(page: Page) -> Teams:
-    # page.locator("div.primary-links").get_by_text("Teams", exact=True).click()
+def get_teams(base_url: str, page: Page) -> Teams:
     page.goto("https://www.formula1.com/en/teams.html")
 
-    teams: list[Locator] = page.locator('main[pagename="Teams"] a.listing-link').all()
+    team_locs: list[Locator] = page.locator('main[pagename="Teams"] a.listing-link').all()
+    team_hrefs: list[str] = [team.get_attribute("href") for team in team_locs]
     result: list[Team] = []
 
-    for team in teams:
-        team.click()
-        page.wait_for_load_state("load")
+    for team in team_hrefs:
+        page.goto(urllib.parse.urljoin(base_url, team))
 
         driver = _get_team_info(page)
         result.append(driver)
-
-        page.go_back()
 
     assert len(result) == 10
 
