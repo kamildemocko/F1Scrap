@@ -15,13 +15,14 @@ from results.results import get_results, Results
 class Main:
     def __init__(self, playwright: Playwright):
         self.browser: Browser = playwright.chromium.launch(headless=True)
-        self.page: Page = self.browser.new_page()
+        self.context = self.browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36")
+        self.page: Page = self.context.new_page()
 
         self.page.goto("https://www.formula1.com")
         self._handle_gdpr()
 
     def _handle_gdpr(self):
-        self.page.wait_for_selector('iframe[id^="sp_message_iframe"]', timeout=1000)
+        self.page.wait_for_selector('iframe[id^="sp_message_iframe"]', timeout=5000)
 
         while self.page.query_selector('iframe[id^="sp_message_iframe"]') is not None:
             gdpr_frame: FrameLocator = self.page.frame_locator('iframe[id^="sp_message_iframe"]')
@@ -96,10 +97,10 @@ if __name__ == "__main__":
             if not circuits_save_path.exists():
                 main.save_circuits(circuits_save_path)
 
-            if not drivers_save_path.exists():
-                main.save_drivers(drivers_save_path)
+        if not drivers_save_path.exists():
+            main.save_drivers(drivers_save_path)
 
-            if not teams_save_path.exists():
-                main.save_teams(teams_save_path)
+        if not teams_save_path.exists():
+            main.save_teams(teams_save_path)
 
     logger.info("end")

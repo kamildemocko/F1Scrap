@@ -22,7 +22,7 @@ def _get_driver_info(page: Page, driver: Locator) -> Driver | None:
     page.wait_for_load_state("load")
 
     try:
-        page.locator(".driver-number").wait_for(timeout=3000)
+        page.locator(".driver-number").wait_for(timeout=10000)
         driver_number = page.locator(".driver-number").text_content().strip()
     except TimeoutError:
         driver_number = 0
@@ -50,7 +50,8 @@ def _get_driver_info(page: Page, driver: Locator) -> Driver | None:
 
 
 def get_drivers(page: Page) -> Drivers:
-    page.locator("div.primary-links").get_by_text("Drivers", exact=True).click()
+    # page.locator("div.primary-links").get_by_text("Drivers", exact=True).click()
+    page.goto("https://www.formula1.com/en/drivers.html")
 
     drivers: list[Locator] = page.locator('main[pagename="Drivers"] a.listing-item--link').all()
     result: list[Driver] = []
@@ -60,6 +61,7 @@ def get_drivers(page: Page) -> Drivers:
         if driver is not None:
             result.append(driver)
 
-    assert len(result) >= 20
+    if len(result) < 20:
+        raise AssertionError(f"Wrong driver count, should be more drivers. is: {len(result)}")
 
     return Drivers(data=result)

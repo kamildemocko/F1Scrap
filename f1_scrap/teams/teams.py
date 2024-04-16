@@ -39,7 +39,8 @@ def _get_team_info(page: Page) -> Team:
 
 
 def get_teams(page: Page) -> Teams:
-    page.locator("div.primary-links").get_by_text("Teams", exact=True).click()
+    # page.locator("div.primary-links").get_by_text("Teams", exact=True).click()
+    page.goto("https://www.formula1.com/en/teams.html")
 
     teams: list[Locator] = page.locator('main[pagename="Teams"] a.listing-link').all()
     result: list[Team] = []
