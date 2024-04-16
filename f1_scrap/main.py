@@ -91,11 +91,11 @@ if __name__ == "__main__":
         new_results: bool = main.save_results(results_save_path)
 
         if new_results:
-            if not circuits_save_path.exists():
-                main.save_circuits(circuits_save_path)
+            if not drivers_save_path.exists():
+                main.save_drivers(drivers_save_path)
 
-        if not drivers_save_path.exists():
-            main.save_drivers(drivers_save_path)
+        if not circuits_save_path.exists():
+            main.save_circuits(circuits_save_path)
 
         if not teams_save_path.exists():
             main.save_teams(teams_save_path)
