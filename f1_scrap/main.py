@@ -67,6 +67,7 @@ class Main:
         results: Results = get_results(self.base_url, self.page)
         is_same = self.read_data(output_path, Results) == results
         if is_same:
+            logger.info("> no changes")
             return False
 
         self.save_data(output_path, results)
