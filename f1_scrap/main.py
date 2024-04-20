@@ -14,7 +14,7 @@ from results.results import get_results, Results
 
 class Main:
     def __init__(self, playwright: Playwright):
-        self.browser: Browser = playwright.chromium.launch(headless=False)
+        self.browser: Browser = playwright.chromium.launch(headless=True)
         self.page: Page = self.browser.new_page()
         self.base_url = "https://www.formula1.com"
 
