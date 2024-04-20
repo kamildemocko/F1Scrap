@@ -11,4 +11,5 @@ class Result(BaseModel):
 
 
 class Results(BaseModel):
-    results: dict[str, list[Result]] = dict[str, list[Result]]
+    sprint: dict[str, list[Result]] = dict[str, list[Result]]
+    race: dict[str, list[Result]] = dict[str, list[Result]]
