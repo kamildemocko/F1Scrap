@@ -14,9 +14,12 @@ from results.results import get_results, Results
 
 class Main:
     def __init__(self, playwright: Playwright):
-        self.browser: Browser = playwright.chromium.launch(headless=True)
+        self.browser: Browser = playwright.chromium.launch(headless=False)
         self.page: Page = self.browser.new_page()
         self.base_url = "https://www.formula1.com"
+
+        self.page.goto(self.base_url)
+        self._handle_gdpr()
 
     def _handle_gdpr(self):
         self.page.wait_for_selector('iframe[id^="sp_message_iframe"]', timeout=5000)
@@ -92,8 +95,7 @@ if __name__ == "__main__":
         new_results: bool = main.save_results(results_save_path)
 
         if new_results:
-            if not drivers_save_path.exists():
-                main.save_drivers(drivers_save_path)
+            main.save_drivers(drivers_save_path)
 
         if not circuits_save_path.exists():
             main.save_circuits(circuits_save_path)
