@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "f1-scrap"
-version = "0.3.1"
+version = "0.3.2"
 description = ""
 authors = ["Kamil Democko <kamil.democko@gmail.com>"]
 readme = "README.md"

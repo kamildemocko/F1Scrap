@@ -82,10 +82,11 @@ class Main:
 if __name__ == "__main__":
     logger.info("start")
 
-    circuits_save_path: Path = Path("output/circuits.json")
-    drivers_save_path: Path = Path("output/drivers.json")
-    teams_save_path: Path = Path("output/teams.json")
-    results_save_path: Path = Path("output/results.json")
+    parent_path: Path = Path("output")
+    circuits_save_path: Path = parent_path.joinpath("circuits.json")
+    drivers_save_path: Path = parent_path.joinpath("drivers.json")
+    teams_save_path: Path = parent_path.joinpath("teams.json")
+    results_save_path: Path = parent_path.joinpath("results.json")
 
     circuits_save_path.parent.mkdir(parents=True, exist_ok=True)
 
