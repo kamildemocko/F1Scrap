@@ -7,9 +7,8 @@ from .drivrer_types import Drivers, Driver
 
 
 def _get_driver_info(browser: Browser, base_url: str, driver: Locator) -> Driver | None:
-    team = driver.locator(".listing-item--team").text_content().strip()
-
-    names = driver.locator(".listing-item--name > span").all()
+    team = driver.locator("> div > div > div > p").text_content().strip()
+    names = driver.locator("h4.f1-inner-wrapper > div > p").all()
     firstname = names[0].text_content().strip()
     lastname = names[1].text_content().strip()
 
@@ -25,13 +24,13 @@ def _get_driver_info(browser: Browser, base_url: str, driver: Locator) -> Driver
         temp_page.goto(urllib.parse.urljoin(base_url, driver.get_attribute("href")))
 
         try:
-            temp_page.locator(".driver-number").wait_for(timeout=10000)
-            driver_number = temp_page.locator(".driver-number").text_content().strip()
+            temp_page.locator(".f1-driver-position > div > p").wait_for(timeout=10000)
+            driver_number = temp_page.locator(".f1-driver-position > div > p").text_content().strip()
 
         except TimeoutError:
             driver_number = 0
 
-        stat_table_values_loc: list[Locator] = temp_page.locator("table.stat-list td").all()
+        stat_table_values_loc: list[Locator] = temp_page.locator("div.f1-dl > dl > dd").all()
         stat_table_values = [v.text_content().strip() for v in stat_table_values_loc]
 
         if len(stat_table_values) != 10:
@@ -57,7 +56,7 @@ def _get_driver_info(browser: Browser, base_url: str, driver: Locator) -> Driver
 def get_drivers(browser: Browser, base_url: str, page: Page) -> Drivers:
     page.goto("https://www.formula1.com/en/drivers.html")
 
-    drivers: list[Locator] = page.locator('main[pagename="Drivers"] a.listing-item--link').all()
+    drivers: list[Locator] = page.locator('div.f1-inner-wrapper > div > a').all()
     result: list[Driver] = []
 
     for driver in drivers:
