@@ -83,9 +83,15 @@ def get_results(base_url: str, page: Page) -> Results:
         if circuit.text_content().strip() == "All":
             continue
 
-        circuit_name = circuit.text_content().strip()
         href_url = urljoin(base_url, circuit.get_attribute("href"))
         page.goto(href_url)
+
+        circuit_name = (page
+                        .locator("h1.ResultsArchiveTitle")
+                        .text_content()
+                        .replace("- RACE RESULT", "")
+                        .replace("- SPRINT", "")
+                        .strip())
 
         output_sprint[circuit_name] = _get_event_data(page, "sprint")
         output_race[circuit_name] = _get_event_data(page, "race")
